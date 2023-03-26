@@ -1,0 +1,4 @@
+[Container]
+Image=quay.io/yblum/wrapme:0.1
+Exec=sh -c "echo STARTED CONTAINER; echo "READY=1" | socat -u STDIN unix-sendto:\$NOTIFY_SOCKET; top"
+

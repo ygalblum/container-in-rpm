@@ -1,0 +1,25 @@
+Name: wrapme
+Version: 0.1
+Release: 1
+Summary: Container wrapping RPM
+License: Apache-2.0
+
+BuildRequires: podman
+
+Requires: podman
+
+%description
+Wrap a container and its Quadlet file inside an RPM
+
+%post
+podman pull quay.io/yblum/wrapme:0.1
+
+%build
+podman build -t quay.io/yblum/wrapme:0.1 .
+
+%install
+install -m 644 wrapme.container %{_sysconfdir}/containers/systemd
+
+%files
+${_sysconfdir}/containers/systemd/wrapme.container
+

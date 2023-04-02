@@ -13,18 +13,22 @@ Requires: podman
 Wrap a container and its Quadlet file inside an RPM
 
 %global debug_package %{nil}
+%global image quay.io/yblum/wrapme:%{version}
 
 %prep
 %setup -c -q
 
 %post
-podman pull quay.io/yblum/wrapme:0.1
+podman pull %{image}
+
+%postun
+podman image rm %{image}
 
 %build
-podman build -t quay.io/yblum/wrapme:0.1 .
+podman build -t %{image} .
 
 %install
-podman push quay.io/yblum/wrapme:0.1
+podman push %{image}
 install -m 755 -d %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 644 wrapme.container %{buildroot}%{_sysconfdir}/containers/systemd
 

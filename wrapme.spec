@@ -34,4 +34,3 @@ install -m 644 wrapme.container %{buildroot}%{_sysconfdir}/containers/systemd
 
 %files
 %{_sysconfdir}/containers/systemd/wrapme.container
-

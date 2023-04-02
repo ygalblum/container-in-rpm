@@ -18,7 +18,7 @@ Wrap a container and its Quadlet file inside an RPM
 %prep
 %setup -c -q
 
-%post
+%pre
 podman pull %{image}
 
 %postun

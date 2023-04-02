@@ -18,7 +18,7 @@ $(RPM_SPECFILE): wrapme.spec
 
 $(RPM_TARBALL):
 	mkdir -p $(CURDIR)/rpmbuild/SOURCES
-	git archive --prefix=wrapme-$(COMMIT)/ --format=tar.gz HEAD > $(RPM_TARBALL)
+	git archive --format=tar.gz HEAD > $(RPM_TARBALL)
 
 .PHONY: srpm
 srpm: $(RPM_SPECFILE) $(RPM_TARBALL)

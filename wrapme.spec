@@ -13,7 +13,7 @@ Requires: podman
 Wrap a container and its Quadlet file inside an RPM
 
 %global debug_package %{nil}
-%global image quay.io/yblum/wrapme:%{version}
+%global image quay.io/yblum/wrapme:%{version}-%{release}
 
 %prep
 %setup -c -q

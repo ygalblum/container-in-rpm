@@ -21,6 +21,8 @@ install -m 755 -d %{buildroot}/opt/wrapme
 install -m 755 mysql/wrapme-mysql-secrets.sh %{buildroot}/opt/wrapme
 install -m 755 app/wrapme-app-secret.sh %{buildroot}/opt/wrapme
 install -m 644 app/wrapme-csr-config.cnf %{buildroot}/opt/wrapme
+install -m 644 app/wrapme-app.* %{buildroot}%{_sysconfdir}/containers/systemd
+install -m 644 app/envoy-proxy-configmap.yml %{buildroot}%{_sysconfdir}/containers/systemd
 
 %files
 
@@ -88,3 +90,29 @@ The Envoy Proxy service requires a self signed certificate
 %files app-secrets
 /opt/wrapme/wrapme-app-secret.sh
 /opt/wrapme/wrapme-csr-config.cnf
+
+%package app
+Summary: Wordpress service with Envoy proxy
+Requires: podman
+Requires: %{name}-network = %{version}-%{release}
+Requires: %{name}-mysql = %{version}-%{release}
+Requires: %{name}-app-secrets = %{version}-%{release}
+
+%description app
+The Wordpress service wrapped with Envoy proxy for the wrapme package
+
+%global wordpress_image docker.io/library/wordpress:4.8-apache
+%global envoy_image docker.io/envoyproxy/envoy:v1.25.0
+
+%pre app
+podman pull %{wordpress_image}
+podman pull %{envoy_image}
+
+%postun app
+podman image rm %{wordpress_image}
+podman image rm %{envoy_image}
+
+%files app
+%{_sysconfdir}/containers/systemd/wrapme-app.kube
+%{_sysconfdir}/containers/systemd/wrapme-app.yml
+%{_sysconfdir}/containers/systemd/envoy-proxy-configmap.yml

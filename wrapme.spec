@@ -7,8 +7,6 @@ Source0:	%{name}-%{commit}.tar.gz
 
 %global debug_package %{nil}
 
-%global image quay.io/yblum/wrapme:%{version}-%{release}
-
 %description
 Generic description
 

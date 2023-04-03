@@ -53,7 +53,6 @@ The MySQL service require storing its password as both raw and kubernetes based 
 %package mysql
 Summary: MySQL service
 Requires: podman
-BuildRequires: podman
 Requires: %{name}-network = %{version}-%{release}
 Requires: %{name}-mysql-secrets = %{version}-%{release}
 

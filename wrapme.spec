@@ -19,6 +19,9 @@ install -m 644 mysql/wrapme-mysql.* %{buildroot}%{_sysconfdir}/containers/system
 install -m 644 network/* %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 755 -d %{buildroot}%{_libexecdir}
 install -m 755 mysql/wrapme-mysql-secrets.sh %{buildroot}%{_libexecdir}
+install -m 755 -d %{buildroot}/opt/wrapme
+install -m 755 app/wrapme-app-secret.sh %{buildroot}/opt/wrapme
+install -m 644 app/wrapme-csr-config.cnf %{buildroot}/opt/wrapme
 
 %files
 
@@ -69,3 +72,21 @@ podman image rm %{mysql_image}
 %files mysql
 %{_sysconfdir}/containers/systemd/wrapme-mysql.container
 %{_sysconfdir}/containers/systemd/wrapme-mysql.volume
+
+%package app-secrets
+Summary: Secrets for Envoy Proxy Server
+Requires: podman
+Requires: openssl
+
+%description app-secrets
+The Envoy Proxy service requires a self signed certificate
+
+%post app-secrets
+/opt/wrapme/wrapme-app-secret.sh create
+
+%preun app-secrets
+/opt/wrapme/wrapme-app-secret.sh remove
+
+%files app-secrets
+/opt/wrapme/wrapme-app-secret.sh
+/opt/wrapme/wrapme-csr-config.cnf

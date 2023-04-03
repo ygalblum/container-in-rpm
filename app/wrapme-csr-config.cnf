@@ -1,0 +1,11 @@
+[req]
+default_bit = 4096
+distinguished_name = req_distinguished_name
+prompt = no
+
+[req_distinguished_name]
+countryName         = IL
+stateOrProvinceName = Israel
+localityName        = Tel Aviv
+organizationName    = Example Org
+commonName          = example.org

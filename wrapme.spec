@@ -17,9 +17,8 @@ Generic description
 install -m 755 -d %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 644 mysql/wrapme-mysql.* %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 644 network/* %{buildroot}%{_sysconfdir}/containers/systemd
-install -m 755 -d %{buildroot}%{_libexecdir}
-install -m 755 mysql/wrapme-mysql-secrets.sh %{buildroot}%{_libexecdir}
 install -m 755 -d %{buildroot}/opt/wrapme
+install -m 755 mysql/wrapme-mysql-secrets.sh %{buildroot}/opt/wrapme
 install -m 755 app/wrapme-app-secret.sh %{buildroot}/opt/wrapme
 install -m 644 app/wrapme-csr-config.cnf %{buildroot}/opt/wrapme
 
@@ -43,13 +42,13 @@ Requires: podman
 The MySQL service require storing its password as both raw and kubernetes based podman secrets
 
 %post mysql-secrets
-%{_libexecdir}/wrapme-mysql-secrets.sh create
+/opt/wrapme/wrapme-mysql-secrets.sh create
 
 %preun mysql-secrets
-%{_libexecdir}/wrapme-mysql-secrets.sh remove
+/opt/wrapme/wrapme-mysql-secrets.sh remove
 
 %files mysql-secrets
-%{_libexecdir}/wrapme-mysql-secrets.sh
+/opt/wrapme/wrapme-mysql-secrets.sh
 
 %package mysql
 Summary: MySQL service

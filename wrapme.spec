@@ -1,9 +1,13 @@
-Name: wrapme
-Version: 0.1
-Release: 1
+Name: {{{ git_dir_name }}}
+Version: {{{ git_dir_version }}}
+Release: 1%{?dist}
 Summary: Container wrapping RPM
+
 License: Apache-2.0
-Source0:	%{name}-%{commit}.tar.gz
+URL: https://github.com/ygalblum/container-in-rpm
+VCS: {{{ git_dir_vcs }}}
+
+Source:	{{{ git_dir_pack }}}
 
 %global debug_package %{nil}
 
@@ -11,7 +15,10 @@ Source0:	%{name}-%{commit}.tar.gz
 Generic description
 
 %prep
-%setup -c -q
+{{{ git_dir_setup_macro }}}
+
+%changelog
+{{{ git_dir_changelog }}}
 
 %install
 install -m 755 -d %{buildroot}%{_sysconfdir}/containers/systemd

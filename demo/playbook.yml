@@ -1,0 +1,51 @@
+- name: Setup quadlet demo machine
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Upgrade all packages
+    ansible.builtin.package:
+      name: "*"
+      state: latest
+    register: result
+    retries: 5
+    until: result is success
+
+  - name: Enable container in RPM copr
+    community.general.copr:
+      name: ygalblum/wrapme
+      chroot: centos-stream-9
+
+  - name: Install packages
+    ansible.builtin.package:
+      name:
+      - bash-completion
+      - vim
+      - jq
+      - python3-cryptography
+      - container-in-rpm-app
+
+  - name: Populate service facts
+    ansible.builtin.service_facts:
+
+  - name: Open Ports in firewalld
+    ansible.posix.firewalld:
+      port: "{{ item }}"
+      permanent: true
+      state: enabled
+    loop:
+    - 8000/tcp
+    - 9000/tcp
+    when:
+    - services['firewalld.service'] is defined
+    - services['firewalld.service']['state'] == 'running'
+
+  - name: Run daemon reload to make Quadlet create the service files
+    ansible.builtin.systemd:
+      daemon_reload: true
+
+  - name: Start the Quadlet Demo Service
+    ansible.builtin.systemd:
+      name: container-in-rpm-app
+      state: started
+      enabled: true

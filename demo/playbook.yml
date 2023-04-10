@@ -46,6 +46,6 @@
 
   - name: Start the Quadlet Demo Service
     ansible.builtin.systemd:
-      name: container-in-rpm-app
+      name: wrapme-app
       state: started
       enabled: true

@@ -28,15 +28,15 @@ function create_secret() {
     # Generate the certificate
     $OPENSSL_CMD x509 -req -days 3650 -in $server_csr -signkey $server_key -out $server_cert 2>/dev/null
 
-    local cert_secret_file=${tmp_path}/secret_$(random_string)
+    local cert_secret_file=${tmp_path}/secret_$(random_string).yml
     cat > $cert_secret_file <<EOF
 kind: Secret
 apiVersion: v1
 metadata:
   name: $SECRET_NAME
 data:
-  certificate.key: $(cat $server_key | base64)
-  certificate.pem: $(cat $server_cert | base64)
+  certificate.key: $(cat $server_key | base64 | tr -d '\n')
+  certificate.pem: $(cat $server_cert | base64| tr -d '\n' )
 EOF
     podman secret create $SECRET_NAME $cert_secret_file
 }

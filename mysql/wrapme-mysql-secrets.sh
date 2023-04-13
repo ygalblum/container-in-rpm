@@ -38,16 +38,19 @@ function remove_secrets() {
     podman secret rm $KUBE_SECRET_NAME
 }
 
+# Check if the secrets already exists (change to use secret exists once released)
+podman secret inspect --format {{.Spec.Name}} $RAW_SECRET_NAME > /dev/null 2>&1
+
 case $COMMAND in
     create)
-    # Check if the secrets already exists (change to use secret exists once released)
-    podman secret inspect --format {{.Spec.Name}} $RAW_SECRET_NAME > /dev/null 2>&1
     if [[ $? -ne 0 ]]; then
         create_secrets
     fi
     ;;
     remove)
-    remove_secrets
+    if [[ $? -eq 0 ]]; then
+        remove_secrets
+    fi
     ;;
     *)
     echo Unsupported command $COMMAND

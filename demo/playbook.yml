@@ -22,7 +22,6 @@
       - bash-completion
       - vim
       - jq
-      - python3-cryptography
       - container-in-rpm-app
 
   - name: Populate service facts

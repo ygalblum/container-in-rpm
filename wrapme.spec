@@ -76,7 +76,9 @@ The MySQL service for the wrapme package
 podman pull %{mysql_image}
 
 %postun mysql
-podman image rm %{mysql_image}
+if [ $1 -eq 0 ]; then
+    podman image rm %{mysql_image}
+fi
 
 %files mysql
 %{_sysconfdir}/containers/systemd/wrapme-mysql.container
@@ -120,8 +122,10 @@ podman pull %{wordpress_image}
 podman pull %{envoy_image}
 
 %postun app
-podman image rm %{wordpress_image}
-podman image rm %{envoy_image}
+if [ $1 -eq 0 ]; then
+    podman image rm %{wordpress_image}
+    podman image rm %{envoy_image}
+fi
 
 %files app
 %{_sysconfdir}/containers/systemd/wrapme-app.kube

@@ -28,9 +28,11 @@ spec:
         secretKeyRef:
           name: wrapme-mysql-root-password-kube
           key: password
+    - name: WORDPRESS_CONFIG_EXTRA
+      value: "define('AUTOMATIC_UPDATER_DISABLED', true);"
     volumeMounts:
     - name: wordpress-persistent-storage
-      mountPath: /var/www/html
+      mountPath: /var/www/html/wp-content
     resources:
       requests:
         memory: "64Mi"

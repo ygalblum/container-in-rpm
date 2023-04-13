@@ -54,7 +54,9 @@ The MySQL service require storing its password as both raw and kubernetes based 
 /opt/wrapme/wrapme-mysql-secrets.sh create
 
 %preun mysql-secrets
-/opt/wrapme/wrapme-mysql-secrets.sh remove
+if [ $1 -eq 0 ]; then
+    /opt/wrapme/wrapme-mysql-secrets.sh remove
+fi
 
 %files mysql-secrets
 /opt/wrapme/wrapme-mysql-secrets.sh
@@ -92,7 +94,9 @@ The Envoy Proxy service requires a self signed certificate
 /opt/wrapme/wrapme-app-secret.sh create
 
 %preun app-secrets
-/opt/wrapme/wrapme-app-secret.sh remove
+if [ $1 -eq 0 ]; then
+    /opt/wrapme/wrapme-app-secret.sh remove
+fi
 
 %files app-secrets
 /opt/wrapme/wrapme-app-secret.sh

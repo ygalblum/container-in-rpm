@@ -73,11 +73,11 @@ The MySQL service for the wrapme package
 %global mysql_image docker.io/library/mysql:5.6
 
 %pre mysql
-podman pull %{mysql_image}
+/usr/bin/podman pull %{mysql_image}
 
 %postun mysql
 if [ $1 -eq 0 ]; then
-    podman image rm %{mysql_image}
+    /usr/bin/podman image rm %{mysql_image}
 fi
 
 %files mysql
@@ -118,13 +118,13 @@ The Wordpress service wrapped with Envoy proxy for the wrapme package
 %global envoy_image docker.io/envoyproxy/envoy:v1.25.0
 
 %pre app
-podman pull %{wordpress_image}
-podman pull %{envoy_image}
+/usr/bin/podman pull %{wordpress_image}
+/usr/bin/podman pull %{envoy_image}
 
 %postun app
 if [ $1 -eq 0 ]; then
-    podman image rm %{wordpress_image}
-    podman image rm %{envoy_image}
+    /usr/bin/podman image rm %{wordpress_image}
+    /usr/bin/podman image rm %{envoy_image}
 fi
 
 %files app

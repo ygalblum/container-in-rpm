@@ -19,7 +19,7 @@ metadata:
 spec:
   containers:
   - name: wordpress
-    image: docker.io/library/wordpress:4.9-apache
+    image: docker.io/library/wordpress:4.8-apache
     env:
     - name: WORDPRESS_DB_HOST
       value: container-in-rpm-mysql

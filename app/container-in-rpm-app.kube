@@ -11,7 +11,7 @@ Yaml=container-in-rpm-app.yml
 # Use the quadlet-demo network
 Network=container-in-rpm.network
 # Publish the envoy proxy data port
-PublishPort=8000:8080
+PublishPort=443:8080
 # Publish the envoy proxy admin port
 PublishPort=9000:9901
 # Use the envoy proxy config map in the same directory

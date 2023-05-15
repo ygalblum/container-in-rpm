@@ -4,7 +4,7 @@ OPENSSL_CMD=$(which openssl)
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 COMMAND=$1
-SECRET_NAME=${2:-"wrapme-envoy-certificates"}
+SECRET_NAME=${2:-"container-in-rpm-envoy-certificates"}
 
 function random_string() {
     local length=${1:-10}
@@ -21,7 +21,7 @@ function create_secret() {
     # Generate the private key
     $OPENSSL_CMD genrsa -out $server_key 4096 2>/dev/null
 
-    local ext_file=${SCRIPT_DIR}/wrapme-csr-config.cnf
+    local ext_file=${SCRIPT_DIR}/container-in-rpm-csr-config.cnf
     # Generate the certificate signing request
     $OPENSSL_CMD req -new -key $server_key -out $server_csr -config $ext_file 2>/dev/null
 

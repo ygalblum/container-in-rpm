@@ -15,18 +15,18 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: wrapme-app
+  name: container-in-rpm-app
 spec:
   containers:
   - name: wordpress
     image: docker.io/library/wordpress:4.9-apache
     env:
     - name: WORDPRESS_DB_HOST
-      value: wrapme-mysql
+      value: container-in-rpm-mysql
     - name: WORDPRESS_DB_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: wrapme-mysql-root-password-kube
+          name: container-in-rpm-mysql-root-password-kube
           key: password
     - name: WORDPRESS_CONFIG_EXTRA
       value: "define('AUTOMATIC_UPDATER_DISABLED', true);"
@@ -63,7 +63,7 @@ spec:
       name: envoy-proxy-config
   - name: certificates
     secret:
-      secretName: wrapme-envoy-certificates
+      secretName: container-in-rpm-envoy-certificates
   - name: wordpress-persistent-storage
     persistentVolumeClaim:
       claimName: wp-pv-claim

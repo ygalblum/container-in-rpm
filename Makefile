@@ -1,20 +1,11 @@
 COMMIT = $(shell (cd "$(SRCDIR)" && git rev-parse HEAD))
 
-container-build:
-	podman build -t quay.io/yblum/wrapme:0.1 .
+RPM_SPECFILE=rpmbuild/SPECS/container-in-rpm.spec
+RPM_TARBALL=rpmbuild/SOURCES/container-in-rpm-$(COMMIT).tar.gz
 
-container-push:
-	podman push quay.io/yblum/wrapme:0.1
-
-container-install:
-	podman pull quay.io/yblum/wrapme:0.1
-
-RPM_SPECFILE=rpmbuild/SPECS/wrapme.spec
-RPM_TARBALL=rpmbuild/SOURCES/wrapme-$(COMMIT).tar.gz
-
-$(RPM_SPECFILE): wrapme.spec
+$(RPM_SPECFILE): container-in-rpm.spec
 	mkdir -p $(CURDIR)/rpmbuild/SPECS
-	cp wrapme.spec $(RPM_SPECFILE)
+	cp container-in-rpm.spec $(RPM_SPECFILE)
 
 $(RPM_TARBALL):
 	mkdir -p $(CURDIR)/rpmbuild/SOURCES

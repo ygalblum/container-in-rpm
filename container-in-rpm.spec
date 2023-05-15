@@ -22,26 +22,26 @@ Generic description
 
 %install
 install -m 755 -d %{buildroot}%{_sysconfdir}/containers/systemd
-install -m 644 mysql/wrapme-mysql.* %{buildroot}%{_sysconfdir}/containers/systemd
+install -m 644 mysql/container-in-rpm-mysql.* %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 644 network/* %{buildroot}%{_sysconfdir}/containers/systemd
-install -m 755 -d %{buildroot}/opt/wrapme
-install -m 755 mysql/wrapme-mysql-secrets.sh %{buildroot}/opt/wrapme
-install -m 755 app/wrapme-app-secret.sh %{buildroot}/opt/wrapme
-install -m 644 app/wrapme-csr-config.cnf %{buildroot}/opt/wrapme
-install -m 644 app/wrapme-app.* %{buildroot}%{_sysconfdir}/containers/systemd
+install -m 755 -d %{buildroot}/opt/container-in-rpm
+install -m 755 mysql/container-in-rpm-mysql-secrets.sh %{buildroot}/opt/container-in-rpm
+install -m 755 app/container-in-rpm-app-secret.sh %{buildroot}/opt/container-in-rpm
+install -m 644 app/container-in-rpm-csr-config.cnf %{buildroot}/opt/container-in-rpm
+install -m 644 app/container-in-rpm-app.* %{buildroot}%{_sysconfdir}/containers/systemd
 install -m 644 app/envoy-proxy-configmap.yml %{buildroot}%{_sysconfdir}/containers/systemd
 
 %files
 
 %package network
-Summary: Podman network for wrapme
+Summary: Podman network for container-in-rpm
 Requires: podman
 
 %description network
-Quadlet Network file for wrapme
+Quadlet Network file for container-in-rpm
 
 %files network
-%{_sysconfdir}/containers/systemd/wrapme.network
+%{_sysconfdir}/containers/systemd/container-in-rpm.network
 
 %package mysql-secrets
 Summary: Secrets for MySQL Server
@@ -51,15 +51,15 @@ Requires: podman
 The MySQL service require storing its password as both raw and kubernetes based podman secrets
 
 %post mysql-secrets
-/opt/wrapme/wrapme-mysql-secrets.sh create
+/opt/container-in-rpm/container-in-rpm-mysql-secrets.sh create
 
 %preun mysql-secrets
 if [ $1 -eq 0 ]; then
-    /opt/wrapme/wrapme-mysql-secrets.sh remove
+    /opt/container-in-rpm/container-in-rpm-mysql-secrets.sh remove
 fi
 
 %files mysql-secrets
-/opt/wrapme/wrapme-mysql-secrets.sh
+/opt/container-in-rpm/container-in-rpm-mysql-secrets.sh
 
 %package mysql
 Summary: MySQL service
@@ -68,7 +68,7 @@ Requires: %{name}-network = %{version}-%{release}
 Requires: %{name}-mysql-secrets = %{version}-%{release}
 
 %description mysql
-The MySQL service for the wrapme package
+The MySQL service for the container-in-rpm package
 
 %global mysql_image docker.io/library/mysql:5.6
 
@@ -81,8 +81,8 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files mysql
-%{_sysconfdir}/containers/systemd/wrapme-mysql.container
-%{_sysconfdir}/containers/systemd/wrapme-mysql.volume
+%{_sysconfdir}/containers/systemd/container-in-rpm-mysql.container
+%{_sysconfdir}/containers/systemd/container-in-rpm-mysql.volume
 
 %package app-secrets
 Summary: Secrets for Envoy Proxy Server
@@ -93,16 +93,16 @@ Requires: openssl
 The Envoy Proxy service requires a self signed certificate
 
 %post app-secrets
-/opt/wrapme/wrapme-app-secret.sh create
+/opt/container-in-rpm/container-in-rpm-app-secret.sh create
 
 %preun app-secrets
 if [ $1 -eq 0 ]; then
-    /opt/wrapme/wrapme-app-secret.sh remove
+    /opt/container-in-rpm/container-in-rpm-app-secret.sh remove
 fi
 
 %files app-secrets
-/opt/wrapme/wrapme-app-secret.sh
-/opt/wrapme/wrapme-csr-config.cnf
+/opt/container-in-rpm/container-in-rpm-app-secret.sh
+/opt/container-in-rpm/container-in-rpm-csr-config.cnf
 
 %package app
 Summary: Wordpress service with Envoy proxy
@@ -112,7 +112,7 @@ Requires: %{name}-mysql = %{version}-%{release}
 Requires: %{name}-app-secrets = %{version}-%{release}
 
 %description app
-The Wordpress service wrapped with Envoy proxy for the wrapme package
+The Wordpress service wrapped with Envoy proxy for the container-in-rpm package
 
 %global wordpress_image docker.io/library/wordpress:4.9-apache
 %global envoy_image docker.io/envoyproxy/envoy:v1.25.0
@@ -128,6 +128,6 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files app
-%{_sysconfdir}/containers/systemd/wrapme-app.kube
-%{_sysconfdir}/containers/systemd/wrapme-app.yml
+%{_sysconfdir}/containers/systemd/container-in-rpm-app.kube
+%{_sysconfdir}/containers/systemd/container-in-rpm-app.yml
 %{_sysconfdir}/containers/systemd/envoy-proxy-configmap.yml

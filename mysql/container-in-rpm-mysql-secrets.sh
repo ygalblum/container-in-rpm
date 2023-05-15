@@ -1,7 +1,7 @@
 #!/bin/sh
 COMMAND=$1
 
-SECRETS_BASE_NAME=${2:-"wrapme-mysql-root-password"}
+SECRETS_BASE_NAME=${2:-"container-in-rpm-mysql-root-password"}
 RAW_SECRET_NAME=$SECRETS_BASE_NAME-container
 KUBE_SECRET_NAME=$SECRETS_BASE_NAME-kube
 

@@ -2,14 +2,14 @@
 WantedBy=default.target
 
 [Unit]
-Requires=wrapme-mysql.service
-After=wrapme-mysql.service
+Requires=container-in-rpm-mysql.service
+After=container-in-rpm-mysql.service
 
 [Kube]
 # Point to the yaml file in the same directory
-Yaml=wrapme-app.yml
+Yaml=container-in-rpm-app.yml
 # Use the quadlet-demo network
-Network=wrapme.network
+Network=container-in-rpm.network
 # Publish the envoy proxy data port
 PublishPort=8000:8080
 # Publish the envoy proxy admin port

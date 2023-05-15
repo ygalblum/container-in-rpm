@@ -22,30 +22,30 @@
       - bash-completion
       - vim
       - jq
-      - container-in-rpm-app
+      # - container-in-rpm-app
 
-  - name: Populate service facts
-    ansible.builtin.service_facts:
+  # - name: Populate service facts
+  #   ansible.builtin.service_facts:
 
-  - name: Open Ports in firewalld
-    ansible.posix.firewalld:
-      port: "{{ item }}"
-      permanent: true
-      state: enabled
-    loop:
-    - 8000/tcp
-    - 9000/tcp
-    when:
-    - services['firewalld.service'] is defined
-    - services['firewalld.service']['state'] == 'running'
+  # - name: Open Ports in firewalld
+  #   ansible.posix.firewalld:
+  #     port: "{{ item }}"
+  #     permanent: true
+  #     state: enabled
+  #   loop:
+  #   - 8000/tcp
+  #   - 9000/tcp
+  #   when:
+  #   - services['firewalld.service'] is defined
+  #   - services['firewalld.service']['state'] == 'running'
 
-  - name: Run daemon reload to make Quadlet create the service files
-    ansible.builtin.systemd:
-      daemon_reload: true
+  # - name: Run daemon reload to make Quadlet create the service files
+  #   ansible.builtin.systemd:
+  #     daemon_reload: true
 
-  - name: Start the Quadlet Demo Service
-    ansible.builtin.systemd:
-      name: container-in-rpm-app
-      state: started
-      enabled: true
+  # - name: Start the Quadlet Demo Service
+  #   ansible.builtin.systemd:
+  #     name: container-in-rpm-app
+  #     state: started
+  #     enabled: true
 

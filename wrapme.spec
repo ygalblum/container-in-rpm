@@ -114,7 +114,7 @@ Requires: %{name}-app-secrets = %{version}-%{release}
 %description app
 The Wordpress service wrapped with Envoy proxy for the wrapme package
 
-%global wordpress_image docker.io/library/wordpress:4.9-apache
+%global wordpress_image docker.io/library/wordpress:4.8-apache
 %global envoy_image docker.io/envoyproxy/envoy:v1.25.0
 
 %pre app
